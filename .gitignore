@@ -1,0 +1,33 @@
+# Git
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Environments
+.env
+.venv/
+venv/
+env/
+
+# Data
+data/
+*.jsonl
+*.tar.gz
+*.zip
+
+# Artifacts/weights
+artifacts/
+models/
+checkpoints/
+
+# Logs
+logs/*.png
+logs/*.csv
+logs/*.json
+
+# OS
+.DS_Store
+Thumbs.db
