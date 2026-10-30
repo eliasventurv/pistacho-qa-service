@@ -10,6 +10,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 from starlette.concurrency import run_in_threadpool
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 logger = logging.getLogger(__name__)
 
@@ -82,9 +83,9 @@ async def predict(req: PredictRequest, request: Request):
         result = await run_in_threadpool(predictor.predict, req.context, req.question)
     return {'id': req.id, **result}
 
-@app.exception_handler(HTTPException)
+@app.exception_handler(StarletteHTTPException)
 async def http_error(request, exc):
-    code = 'unauthorized' if exc.status_code == 401 else 'bad_request' if exc.status_code in (400,422) else 'internal_error'
+    code = 'unauthorized' if exc.status_code == 401 else 'bad_request' if 400 <= exc.status_code < 500 else 'internal_error'
     return JSONResponse({'error': code}, status_code=exc.status_code, headers=exc.headers)
 
 @app.exception_handler(RequestValidationError)

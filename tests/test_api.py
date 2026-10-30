@@ -54,6 +54,10 @@ def test_malformed_json(client):
     r=client.post('/predict',content='{',headers={'Content-Type':'application/json'})
     assert r.status_code==422 and r.json()['error']=='bad_request'
 
+def test_unknown_route_uses_error_schema(client):
+    r=client.get('/missing')
+    assert r.status_code==404 and r.json()['error']=='bad_request'
+
 @pytest.mark.parametrize('question',['q','none'])
 def test_span_and_null(client,question):
     r=client.post('/predict',json={'id':'echo','context':'ábc','question':question})
