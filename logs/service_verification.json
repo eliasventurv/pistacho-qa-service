@@ -1,0 +1,112 @@
+{
+  "info": {
+    "team": "Pistacho",
+    "model": "distilbert-base-uncased",
+    "params": 66364418,
+    "max_seq_length": 384,
+    "doc_stride": 128
+  },
+  "local_url": "http://127.0.0.1:8000",
+  "auth_checks": [
+    {
+      "url": "http://127.0.0.1:8000",
+      "endpoint": "/info",
+      "status": 401
+    },
+    {
+      "url": "http://127.0.0.1:8000",
+      "endpoint": "/info",
+      "status": 401
+    },
+    {
+      "url": "http://127.0.0.1:8000",
+      "endpoint": "/predict",
+      "status": 401
+    },
+    {
+      "url": "http://127.0.0.1:8000",
+      "endpoint": "/predict",
+      "status": 401
+    },
+    {
+      "url": "https://indexed-bibliographic-glossary-contributing.trycloudflare.com",
+      "endpoint": "/info",
+      "status": 401
+    },
+    {
+      "url": "https://indexed-bibliographic-glossary-contributing.trycloudflare.com",
+      "endpoint": "/info",
+      "status": 401
+    },
+    {
+      "url": "https://indexed-bibliographic-glossary-contributing.trycloudflare.com",
+      "endpoint": "/predict",
+      "status": 401
+    },
+    {
+      "url": "https://indexed-bibliographic-glossary-contributing.trycloudflare.com",
+      "endpoint": "/predict",
+      "status": 401
+    }
+  ],
+  "cpu_benchmark": {
+    "requests": 50,
+    "total_seconds": 12.709296200002427,
+    "max_seconds": 0.5380850000001374,
+    "mean_seconds": 0.25418302599980963,
+    "seconds": [
+      0.23003130000142846,
+      0.1986362999996345,
+      0.20198900000104913,
+      0.2056295999973372,
+      0.49950219999664114,
+      0.18872689999989234,
+      0.17585609999878216,
+      0.18660169999930076,
+      0.17399060000025202,
+      0.48239749999993364,
+      0.17583789999844157,
+      0.1787006000013207,
+      0.17378800000005867,
+      0.1799977000009676,
+      0.5190790000015113,
+      0.1704730000019481,
+      0.19438040000022738,
+      0.1835003999985929,
+      0.18677169999864418,
+      0.5380850000001374,
+      0.1861678999994183,
+      0.18382180000116932,
+      0.178758400001243,
+      0.20053639999969164,
+      0.5265523000016401,
+      0.1854576999976416,
+      0.18084469999666908,
+      0.1888571999988926,
+      0.17664109999896027,
+      0.5102263000007952,
+      0.18260240000017802,
+      0.21659720000025118,
+      0.18200230000002193,
+      0.19426469999962137,
+      0.5299885999993421,
+      0.1914682000024186,
+      0.18242449999888777,
+      0.1777064000016253,
+      0.19503029999759747,
+      0.5371283999993466,
+      0.18251640000016778,
+      0.20471470000120462,
+      0.18720659999962663,
+      0.2034124999991036,
+      0.5119296999982907,
+      0.17716500000096858,
+      0.18393009999999776,
+      0.18113939999966533,
+      0.19700010000087786,
+      0.5290850999990653
+    ]
+  },
+  "public_url_tested": "https://indexed-bibliographic-glossary-contributing.trycloudflare.com",
+  "public_tunnel_note": "Temporary test tunnel; stopped after verification. Not the instructor dry run."
+}

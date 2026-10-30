@@ -1,0 +1,96 @@
+{
+  "url": "https://indexed-bibliographic-glossary-contributing.trycloudflare.com",
+  "metrics": {
+    "overall": {
+      "count": 5,
+      "exact_match": 60.0,
+      "f1": 60.0
+    },
+    "answerable": {
+      "count": 3,
+      "exact_match": 66.66666666666667,
+      "f1": 66.66666666666667
+    },
+    "unanswerable": {
+      "count": 2,
+      "exact_match": 50.0,
+      "f1": 50.0
+    }
+  },
+  "mean_seconds": 0.47971533999952953,
+  "rows": [
+    {
+      "id": "sample-01",
+      "references": [
+        "16",
+        "16 attention heads"
+      ],
+      "prediction": {
+        "id": "sample-01",
+        "answer": null,
+        "start": null,
+        "score": 0.7855964128441739
+      },
+      "em": 0.0,
+      "f1": 0.0,
+      "seconds": 0.4411012999989907
+    },
+    {
+      "id": "sample-02",
+      "references": [
+        "3.5 days"
+      ],
+      "prediction": {
+        "id": "sample-02",
+        "answer": "3.5 days",
+        "start": 437,
+        "score": 0.6114655807479804
+      },
+      "em": 1.0,
+      "f1": 1.0,
+      "seconds": 0.3986521000006178
+    },
+    {
+      "id": "sample-03",
+      "references": [],
+      "prediction": {
+        "id": "sample-03",
+        "answer": null,
+        "start": null,
+        "score": 0.9009846922804129
+      },
+      "em": 1.0,
+      "f1": 1.0,
+      "seconds": 0.4383820000002743
+    },
+    {
+      "id": "sample-04",
+      "references": [],
+      "prediction": {
+        "id": "sample-04",
+        "answer": "10,000 times",
+        "start": 263,
+        "score": 0.5537749000364118
+      },
+      "em": 0.0,
+      "f1": 0.0,
+      "seconds": 0.40036849999887636
+    },
+    {
+      "id": "sample-05",
+      "references": [
+        "50,257",
+        "50,257 tokens"
+      ],
+      "prediction": {
+        "id": "sample-05",
+        "answer": "50,257",
+        "start": 3157,
+        "score": 0.9791951214872027
+      },
+      "em": 1.0,
+      "f1": 1.0,
+      "seconds": 0.7200727999988885
+    }
+  ]
+}

@@ -8,6 +8,8 @@ def main():
     def read(name): return json.loads((ROOT/name).read_text(encoding='utf-8'))
     meta=read('logs/run_metadata.json');val=read('logs/validation.json');sample=read('logs/public_sample_results.json')
     hardware=read('logs/hardware.json')
+    service=read('logs/service_verification.json')
+    tunnel=read('logs/tunnel_sample_results.json')
     assert meta['completed'] and meta['global_step']>0
     cfg=meta['config'];t=cfg['training'];m=cfg['model'];score=val['held_out']
     table='\n'.join(f"| {r['id']} | {', '.join(r['references']) or 'null'} | {r['prediction']['answer'] or 'null'} | {r['prediction']['start']} | {'Yes' if r['em'] else 'No'} |" for r in sample['rows'])
@@ -23,7 +25,7 @@ def main():
 | Members | Elías Ventura, Lilly Flores, Andrés Avilés |
 | Repository URL | https://github.com/eliasventurv/pistacho-qa-service |
 | `submission` commit hash | Pending final dry run and submission tag; resolve with `git rev-parse submission` |
-| Public service URL used at the dry run | Instructor dry run pending; local evidence uses {sample['url']} |
+| Public service URL used at the dry run | Team self-test: {service['public_url_tested']} (temporary tunnel stopped); instructor dry run pending |
 | AI tools used (which, and for what) | Codex: scaffold audit, implementation, tests, local training orchestration and documentation; team must understand and defend code |
 
 ## 1. Model choice and justification
@@ -87,10 +89,13 @@ token remain pending. `.env` files are ignored but not loaded automatically.
 |---|---|---|---|---|
 {table}
 
-Exact-match errors are genuine model errors: a valid span format does not
-prove semantic correctness. Small-data fine-tuning and imperfect no-answer
-calibration can confuse plausible distractors with supported answers. Public
-sample answers were not used to train or select the threshold.
+The model returned null for sample-01 even though the context states 16 heads:
+its null margin exceeded the independently calibrated threshold. In sample-04,
+it returned "10,000 times", confusing a parameter-reduction figure for GPT-3
+with a question about BERT-base GPU memory; the requested fact is absent.
+These are semantic failures despite valid JSON and offsets. Sample-05's late
+answer was found through sliding windows. Public samples were never used to
+train or select the threshold. Local and HTTPS predictions agreed (3/5 correct).
 
 ## 6. Model size and latency (not graded)
 
@@ -101,7 +106,11 @@ sample answers were not used to train or select the threshold.
 | Mean CPU HTTP latency, 5 samples | {sample['mean_seconds']:.3f} s |
 | Laptop CPU and RAM | {hardware['cpu']}; {hardware['ram_gb']:.1f} GiB |
 
-This small sample does not guarantee the 150-second cap for 50 hidden requests.
+Repeating the five items ten times took {service['cpu_benchmark']['total_seconds']:.2f}s
+for 50 local HTTP requests (maximum {service['cpu_benchmark']['max_seconds']:.3f}s).
+The five HTTPS requests averaged {tunnel['mean_seconds']:.3f}s. Authentication
+checks passed locally and over HTTPS. These samples do not guarantee the
+150-second cap for unseen texts or changing network conditions.
 
 ## 7. Problems encountered and how you fixed them
 
