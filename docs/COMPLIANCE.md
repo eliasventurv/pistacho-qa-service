@@ -39,9 +39,10 @@ after verification; its recorded URL is not a currently running service.
 - [ ] Instructor's token and registered team name confirmed.
 - [ ] Backup ngrok account configured and tunnel tested (user has no account).
 - [ ] Instructor dry run from another network and URL shared by the team.
-- [ ] Final submission tag after team review.
+- [x] Version closed by the team; submission tag identifies this snapshot.
 - [ ] Pitch and individual Q&A rehearsed by each member.
 
 **Not yet a fully completed submission.** Technical operation and section V
 have supporting evidence, but public-sample quality is imperfect and the above
 external steps remain. A report with missing/empty sections halves the grade.
+

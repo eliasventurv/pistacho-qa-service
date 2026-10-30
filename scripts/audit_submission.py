@@ -30,10 +30,11 @@ def main():
       'public_sample_count':5,
       'manual_code_review':'Serving loads only local files; no commercial model calls. QA_API_TOKEN comes only from environment. Test tokens are generated in memory.',
       'submission_ready':False,
-      'remaining':['Instructor token and registered team name confirmation','Backup ngrok account/configuration and actual tunnel test','Instructor dry run from another network','Final submission tag after team review','Pitch and individual Q&A'],
+      'remaining':['Instructor token and registered team name confirmation','Backup ngrok account/configuration and actual tunnel test','Instructor dry run from another network','Pitch and individual Q&A'],
       'limits':'No claim of perfect public-sample accuracy, hidden-set grade, instructor dry-run acceptance or individual Q&A performance.'}
     (ROOT/'logs/compliance_audit.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
     print(json.dumps(result,indent=2))
     if not all(checks.values()):raise SystemExit(1)
 
 if __name__=='__main__':main()
+

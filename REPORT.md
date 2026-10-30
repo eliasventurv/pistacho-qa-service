@@ -7,7 +7,7 @@
 | Team id | Pistacho (chosen by team; instructor registration pending) |
 | Members | Elías Ventura, Lilly Flores, Andrés Avilés |
 | Repository URL | https://github.com/eliasventurv/pistacho-qa-service |
-| `submission` commit hash | Pending final dry run and submission tag; resolve with `git rev-parse submission` |
+| `submission` commit hash | This version is identified by the `submission` tag; exact hash: `git rev-parse submission` |
 | Public service URL used at the dry run | Team self-test: https://indexed-bibliographic-glossary-contributing.trycloudflare.com (temporary tunnel stopped); instructor dry run pending |
 | AI tools used (which, and for what) | Codex: scaffold audit, implementation, tests, local training orchestration and documentation; team must understand and defend code |
 
@@ -110,11 +110,11 @@ checks passed locally and over HTTPS. These samples do not guarantee the
 
 Fix commits (preserved history):
 ```
+b575baf results: record local training, calibrated QA and HTTPS verification
 8ea964c fix: pin compatible Arrow and verify training provenance
 b206e65 docs: add reproducible Windows workflow and evidence-based submission checklist
 07e82db fix: enforce QA API contract and bearer authentication
 9ab27d3 feat: implement local SQuAD2 fine-tuning and windowed QA
-597fad6 merge: docs/report
 ```
 
 ## 8. Decoder investigation
