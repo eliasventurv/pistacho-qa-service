@@ -7,7 +7,7 @@ import time
 from pathlib import Path
 import torch
 from transformers import AutoModelForQuestionAnswering, AutoTokenizer, Trainer, TrainerCallback, TrainingArguments, set_seed
-from src.data import load_squad_v2
+from src.data import DATASET_REVISION, load_squad_v2
 from src.predict import ROOT, load_config, tokenize_for_qa
 
 BASE_MODELS = {'distilbert-base-uncased', 'distilbert/distilbert-base-uncased', 'bert-base-uncased'}
@@ -80,7 +80,8 @@ def main():
     train_features = train.map(prepare, batched=True, remove_columns=train.column_names)
     val_features = val.map(prepare, batched=True, remove_columns=val.column_names)
     metadata = dict(base_checkpoint=m['name'], base_revision=getattr(model.config,'_commit_hash',None),
-        dataset='squad_v2', train_examples=len(train), validation_examples=len(val),
+        dataset='squad_v2', dataset_revision=DATASET_REVISION,
+        train_examples=len(train), validation_examples=len(val),
         train_features=len(train_features), seed=t['seed'], config=cfg,
         hardware=torch.cuda.get_device_name(0) if torch.cuda.is_available() else platform.processor(),
         torch_version=torch.__version__, python_version=platform.python_version(),

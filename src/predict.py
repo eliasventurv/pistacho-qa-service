@@ -1,5 +1,6 @@
 """Local QA with overlapping windows and CLS no-answer scores."""
 import math
+import json
 from pathlib import Path
 import numpy as np
 import torch
@@ -56,6 +57,11 @@ class QAPredictor:
         path = ROOT / self.config['model']['output_dir']
         if not (path / 'training_provenance.json').is_file():
             raise RuntimeError('Trained model missing. Run python -m src.train first.')
+        provenance = json.loads((path / 'training_provenance.json').read_text(encoding='utf-8'))
+        if not provenance.get('completed') or provenance.get('global_step', 0) <= 0:
+            raise RuntimeError('Model does not have evidence of completed fine-tuning.')
+        if provenance.get('base_checkpoint') != self.config['model']['name']:
+            raise RuntimeError('Model provenance and configured base checkpoint disagree.')
         self.tokenizer = AutoTokenizer.from_pretrained(path, local_files_only=True)
         self.model = AutoModelForQuestionAnswering.from_pretrained(path, local_files_only=True)
         self.device = torch.device(device)
