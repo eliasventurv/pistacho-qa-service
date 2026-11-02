@@ -15,7 +15,7 @@ training:
   seed: 42
   max_train_samples: null
 threshold:
-  selected_threshold: 0.0
+  selected_threshold: -1.7791762351989746
 serving:
   host: 127.0.0.1
   port: 8000

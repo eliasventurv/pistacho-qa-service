@@ -1,0 +1,37 @@
+{
+  "threshold": -1.8722820281982422,
+  "calibration": {
+    "overall": {
+      "count": 500,
+      "exact_match": 60.6,
+      "f1": 62.389677378440055
+    },
+    "answerable": {
+      "count": 241,
+      "exact_match": 45.22821576763486,
+      "f1": 48.94123937435696
+    },
+    "unanswerable": {
+      "count": 259,
+      "exact_match": 74.9034749034749,
+      "f1": 74.9034749034749
+    }
+  },
+  "held_out": {
+    "overall": {
+      "count": 500,
+      "exact_match": 58.4,
+      "f1": 60.368934963671805
+    },
+    "answerable": {
+      "count": 252,
+      "exact_match": 45.63492063492063,
+      "f1": 49.541537626332946
+    },
+    "unanswerable": {
+      "count": 248,
+      "exact_match": 71.37096774193549,
+      "f1": 71.37096774193549
+    }
+  }
+}

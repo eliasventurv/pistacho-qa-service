@@ -3,15 +3,15 @@
 ## Local service
 
 Use Python 3.12 and `setup.ps1`. Train with `train.ps1`, or copy the **entire**
-trained `artifacts/distilbert-squad2/` directory from this laptop. It must include
+trained `artifacts/roberta-squad2/` directory from this laptop. It must include
 the tokenizer, safetensors, model config and training provenance. Do not commit
 weights. The service does not fetch a missing model from the Internet.
 
-Set `QA_API_TOKEN` in the current PowerShell session to the instructor's token;
+Set `QA_API_TOKEN` in the current PowerShell session to the agreed token;
 then run `run.ps1`. The environment variable is the only token source. An `.env`
 file is not loaded automatically. Use one worker to avoid duplicating memory.
 
-## Primary public tunnel: Cloudflare Quick Tunnel
+## Backup tunnel: Cloudflare Quick Tunnel
 
 Install cloudflared from Cloudflare's official distribution, then run:
 
@@ -22,13 +22,14 @@ cloudflared tunnel --url http://127.0.0.1:8000
 Use the HTTPS address printed by cloudflared. It changes after restart. The
 model still runs on this laptop. Keep service and tunnel processes running.
 
-## Backup: ngrok
+## Primary tunnel: ngrok (fixed domain)
 
 Install ngrok from its official distribution. Configure your account privately
-using its official setup instructions; do not put the ngrok credential in Git.
+with `ngrok config add-authtoken`; do not put the ngrok credential in Git.
+The free account has a fixed domain, so the URL does not change on restart:
 
 ```powershell
-ngrok http 8000
+ngrok http 8000   # -> https://boil-confiding-default.ngrok-free.dev
 ```
 
 A backup is only verified after making real requests through its public URL.

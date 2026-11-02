@@ -1,58 +1,43 @@
-# Pistacho QA — versión cerrada
+# Pistacho QA — léeme primero
 
-Equipo: Elías Ventura, Lilly Flores y Andrés Avilés.
-Versión cerrada el 30 de octubre de 2026, para entrega el 31 de octubre.
+Equipo `pistacho`: Elías Ventura, Lilly Flores y Andrés Avilés.
 
-## Resultados reales
+## Resultados actuales (RoBERTa-base)
 
-- Modelo entrenado localmente desde DistilBERT base: 40 000 preguntas, dos épocas.
+- Modelo entrenado localmente desde `FacebookAI/roberta-base`: SQuAD 2.0 completo
+  (130 319 preguntas), dos épocas, 112 min en una RTX 4050 Laptop.
+- Validación separada (2000 preguntas): 81,25 % EM y 83,77 % F1.
+- Ejemplos públicos: 5 de 5 correctos.
+- 50 solicitudes locales en CPU: 19,9 s; media 0,40 s; máxima 0,87 s.
 - 30 pruebas automatizadas aprobadas.
-- Validación separada: 58,40 % EM y 60,37 % F1.
-- Ejemplos públicos: 3 de 5 correctos. Los dos fallos están explicados en REPORT.md.
-- 50 solicitudes locales en CPU: 12,71 s; máxima individual 0,54 s.
-- Cloudflare probado: media de 0,48 s en los cinco ejemplos públicos.
+- El modelo anterior (DistilBERT, 58,4 EM / 60,4 F1, 3 de 5) está documentado en
+  `logs/distilbert-baseline/`.
 
-## Abrir el servicio en esta computadora
+## Abrir el servicio
 
-La copia del Escritorio incluye el entorno Python y los pesos entrenados.
-Abre PowerShell dentro de esta carpeta. Establece QA_API_TOKEN en esa terminal
-con el valor acordado con el docente y ejecuta:
+Los pesos van en `artifacts/roberta-squad2/` (fuera de Git). En PowerShell, dentro
+de esta carpeta:
 
 ```powershell
+$env:QA_API_TOKEN = "<token acordado>"   # nunca en el código ni en Git
 .\run.ps1
 ```
 
-Para verificar que cargó, abre http://127.0.0.1:8000/health. Debe responder
-`{"status":"ok"}`. /info y /predict requieren el token Bearer.
-
-Para abrir un túnel nuevo en otra terminal:
+Verifica http://127.0.0.1:8000/health → `{"status":"ok"}`. Luego, en otra terminal:
 
 ```powershell
-.\tools\cloudflared-verified.exe tunnel --url http://127.0.0.1:8000 --protocol http2
+ngrok http 8000    # https://boil-confiding-default.ngrok-free.dev (dominio fijo)
 ```
 
-La URL cambia en cada arranque. El túnel usado en las pruebas fue cerrado.
-No hay un token de acceso real guardado en esta carpeta.
-
-Si copias el proyecto a otra computadora, ejecuta setup.ps1 para recrear el
-entorno con Python 3.12. No necesitas volver a entrenar si conservas artifacts.
-No ejecutes train.ps1 salvo que quieras iniciar otro entrenamiento.
+Respaldo: `cloudflared tunnel --url http://127.0.0.1:8000` (la URL cambia cada vez).
 
 ## Archivos importantes
 
-- REPORT.md: informe completo en inglés.
+- REPORT.md: informe en inglés.
 - docs/COMPLIANCE.md: auditoría de la sección V y pendientes.
-- docs/PRESENTATION.md: preparación del pitch y preguntas individuales.
-- logs/: curvas, registros, resultados y pruebas.
-- artifacts/distilbert-squad2/: modelo entrenado; fuera de Git.
-- .git/: historial original y cambios en una rama aparte.
+- logs/: curva de pérdida, registros, validación, ejemplos públicos y pruebas.
 
-## Pendientes externos
+## Pendientes
 
-Confirmar el token y el nombre registrado con el docente; crear/configurar una
-cuenta de ngrok y probar el túnel de respaldo; hacer el ensayo oficial desde otra
-red y compartir la URL; preparar el pitch y Q&A. No se afirma que estos pasos
-estén hechos ni que el modelo obtendrá una nota específica.
-
-La etiqueta Git `submission` identifica esta versión de código y evidencias.
-Para ver su hash exacto: `git rev-parse submission`.
+Dry run oficial por el túnel desde otra red, enviar la URL al docente, subir los
+pesos nuevos como release, mover la etiqueta `submission`, y preparar pitch y Q&A.

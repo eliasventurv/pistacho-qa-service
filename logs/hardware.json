@@ -1,6 +1,6 @@
 {
-  "cpu": "13th Gen Intel(R) Core(TM) i9-13900H",
-  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
-  "ram_gb": 31.71080780029297,
-  "params": 66364418
+  "cpu": "13th Gen Intel(R) Core(TM) i7-13620H",
+  "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+  "ram_gb": 15.71,
+  "params": 124056578
 }

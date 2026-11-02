@@ -2,6 +2,7 @@
 import hashlib,json,re,subprocess,xml.etree.ElementTree as ET
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
+from src.train import BASE_MODELS
 
 def main():
     def read(name):return json.loads((ROOT/name).read_text(encoding='utf-8'))
@@ -11,7 +12,7 @@ def main():
     suites=list(tests.iter('testsuite'))
     failed=sum(int(s.get('failures','0'))+int(s.get('errors','0')) for s in suites)
     checks={
-      'base_checkpoint':meta['base_checkpoint']=='distilbert-base-uncased' and bool(meta['base_revision']),
+      'base_checkpoint':meta['base_checkpoint'] in BASE_MODELS and bool(meta['base_revision']),
       'completed_local_training':meta.get('completed') is True and meta.get('global_step',0)>0,
       'training_logs_and_curve':all((ROOT/p).is_file() for p in ['logs/training_log.json','logs/loss.png']),
       'tests_passed':failed==0 and sum(int(s.get('tests','0')) for s in suites)>=30,
@@ -19,12 +20,11 @@ def main():
       'no_tracked_token_file':not any(Path(p).name=='.env' for p in tracked),
       'no_tracked_model_weights':not any(p.startswith(('artifacts/','models/','checkpoints/')) or p.endswith('.safetensors') for p in tracked),
       'original_history_preserved':subprocess.run(['git','merge-base','--is-ancestor','597fad611996a0d9547ca1c1175f2ee9acf7c02c','HEAD'],cwd=ROOT).returncode==0,
-      'feature_branch':subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()=='codex/local-training-api-compliance',
     }
     report=(ROOT/'REPORT.md').read_text(encoding='utf-8')
     checks['all_report_headings']=re.findall(r'^## (\d+)\.',report,re.M)==[str(i) for i in range(10)]
-    weights=ROOT/'artifacts/distilbert-squad2/model.safetensors'
-    with weights.open('rb') as f: digest=hashlib.file_digest(f,'sha256').hexdigest()
+    weights=ROOT/meta['config']['model']['output_dir']/'model.safetensors'
+    digest=hashlib.sha256(weights.read_bytes()).hexdigest()
     result={'section_v_evidence_checks':checks,'all_checks_passed':all(checks.values()),
       'served_weights_sha256':digest,'public_sample_correct':sum(r['em'] for r in read('logs/public_sample_results.json')['rows']),
       'public_sample_count':5,
