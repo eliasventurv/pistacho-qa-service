@@ -73,7 +73,7 @@ async def health(request: Request):
 async def info(request: Request):
     predictor = get_predictor(request)
     cfg = predictor.config['model']
-    return {'team': 'Pistacho', 'model': cfg['name'], 'params': predictor.params,
+    return {'team': 'pistacho', 'model': cfg['name'], 'params': predictor.params,
             'max_seq_length': cfg['max_seq_length'], 'doc_stride': cfg['doc_stride']}
 
 @app.post('/predict', response_model=PredictResponse, dependencies=[Depends(verify_token)])

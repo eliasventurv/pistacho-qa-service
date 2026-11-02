@@ -5,6 +5,7 @@ import tempfile
 import zipfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
+from src.predict import load_config
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--include-weights',action='store_true');args=parser.parse_args()
@@ -21,7 +22,7 @@ def main():
                         raise ValueError('Unexpected private/runtime file tracked in Git: '+name)
                     z.write(ROOT/name,name)
             if args.include_weights:
-                model=ROOT/'artifacts/distilbert-squad2'
+                model=ROOT/load_config()['model']['output_dir']
                 if not (model/'training_provenance.json').exists(): raise ValueError('No trained model')
                 for file in model.iterdir():
                     if file.is_file(): z.write(file,file.relative_to(ROOT))

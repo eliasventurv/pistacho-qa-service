@@ -10,7 +10,8 @@ from transformers import AutoModelForQuestionAnswering, AutoTokenizer, Trainer, 
 from src.data import DATASET_REVISION, load_squad_v2
 from src.predict import ROOT, load_config, tokenize_for_qa
 
-BASE_MODELS = {'distilbert-base-uncased', 'distilbert/distilbert-base-uncased', 'bert-base-uncased'}
+BASE_MODELS = {'distilbert-base-uncased', 'distilbert/distilbert-base-uncased', 'bert-base-uncased',
+               'roberta-base', 'FacebookAI/roberta-base'}
 
 def prepare_features(examples, tokenizer, length=384, stride=128):
     encoded = tokenize_for_qa(examples, tokenizer, length, stride)
@@ -72,7 +73,8 @@ def main():
     ds = load_squad_v2()
     count = args.max_train_samples or t['max_train_samples'] or len(ds['train'])
     train = ds['train'].shuffle(seed=t['seed']).select(range(min(count, len(ds['train']))))
-    val = ds['validation'].shuffle(seed=t['seed']).select(range(1000, 1500))
+    # Loss monitoring only; disjoint from the threshold calibration and held-out slices.
+    val = ds['validation'].shuffle(seed=t['seed']).select(range(4000, 4500))
     tokenizer = AutoTokenizer.from_pretrained(m['name'], use_fast=True)
     model = AutoModelForQuestionAnswering.from_pretrained(m['name'], use_safetensors=True)
     def prepare(batch):
@@ -96,8 +98,8 @@ def main():
         per_device_train_batch_size=t['batch_size'], per_device_eval_batch_size=8,
         gradient_accumulation_steps=t['gradient_accumulation_steps'], learning_rate=float(t['learning_rate']),
         warmup_ratio=t['warmup_ratio'], weight_decay=0.01, fp16=torch.cuda.is_available(),
-        logging_steps=20, save_strategy='steps', save_steps=250, save_total_limit=2,
-        eval_strategy='steps', eval_steps=250, report_to=[], seed=t['seed'],
+        logging_steps=50, save_strategy='steps', save_steps=1000, save_total_limit=2,
+        eval_strategy='steps', eval_steps=500, report_to=[], seed=t['seed'],
         dataloader_num_workers=0, disable_tqdm=True)
     trainer = Trainer(model=model,args=ta,train_dataset=train_features,
         eval_dataset=val_features,tokenizer=tokenizer,callbacks=[SaveLogs()])

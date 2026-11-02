@@ -1,8 +1,8 @@
 model:
-  name: distilbert-base-uncased
+  name: FacebookAI/roberta-base
   max_seq_length: 384
   doc_stride: 128
-  output_dir: artifacts/distilbert-squad2
+  output_dir: artifacts/roberta-squad2
 training:
   dataset: squad_v2
   train_split: train
@@ -13,9 +13,9 @@ training:
   batch_size: 8
   gradient_accumulation_steps: 4
   seed: 42
-  max_train_samples: 40000
+  max_train_samples: null
 threshold:
-  selected_threshold: -1.8722820281982422
+  selected_threshold: 0.0
 serving:
   host: 127.0.0.1
   port: 8000
