@@ -1,13 +1,7 @@
-# Pistacho QA Service - Run Script (Windows PowerShell)
-# Place model in artifacts/distilbert-squad2/, set QA_API_TOKEN, run this script
-
-$ErrorActionPreference = "Stop"
-
-if (-not $env:QA_API_TOKEN) {
-    Write-Host "QA_API_TOKEN is not set. Set it first:" -ForegroundColor Red
-    Write-Host "  `$env:QA_API_TOKEN = '<your-agreed-token>'" -ForegroundColor Yellow
-    exit 1
-}
-
-Write-Host "Starting Pistacho QA Service on http://0.0.0.0:8000" -ForegroundColor Green
-uvicorn app:app --host 0.0.0.0 --port 8000
+param([int]$Port = 8000)
+$ErrorActionPreference = 'Stop'
+Set-Location $PSScriptRoot
+if (-not $env:QA_API_TOKEN) { throw 'Set QA_API_TOKEN in this terminal before starting. Never put the token in source code.' }
+if (-not (Test-Path "$((Get-Content configs/default.yaml | Select-String 'output_dir:').ToString().Split(':')[1].Trim())/training_provenance.json")) { throw 'No trained model found. Run .\train.ps1 first.' }
+& "$PSScriptRoot\.venv\Scripts\python.exe" -m uvicorn app:app --host 127.0.0.1 --port $Port --workers 1
+exit $LASTEXITCODE

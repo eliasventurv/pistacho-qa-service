@@ -1,0 +1,26 @@
+{
+  "section_v_evidence_checks": {
+    "base_checkpoint": true,
+    "completed_local_training": true,
+    "training_logs_and_curve": true,
+    "tests_passed": true,
+    "real_auth_checks": true,
+    "no_tracked_token_file": true,
+    "no_tracked_model_weights": true,
+    "original_history_preserved": true,
+    "all_report_headings": true
+  },
+  "all_checks_passed": true,
+  "served_weights_sha256": "e81a11cc2dd394e58515884be12ce04cf3d1ba8fdc9bbc016e50214a0df235eb",
+  "public_sample_correct": 5.0,
+  "public_sample_count": 5,
+  "manual_code_review": "Serving loads only local files; no commercial model calls. QA_API_TOKEN comes only from environment. Test tokens are generated in memory.",
+  "submission_ready": false,
+  "remaining": [
+    "Instructor token and registered team name confirmation",
+    "Backup ngrok account/configuration and actual tunnel test",
+    "Instructor dry run from another network",
+    "Pitch and individual Q&A"
+  ],
+  "limits": "No claim of perfect public-sample accuracy, hidden-set grade, instructor dry-run acceptance or individual Q&A performance."
+}

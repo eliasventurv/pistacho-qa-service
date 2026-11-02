@@ -2,28 +2,20 @@ from pathlib import Path
 import json
 from datasets import load_dataset
 
+ROOT=Path(__file__).resolve().parents[1]
+DATASET_REVISION='3ffb306f725f7d2ce8394bc1873b24868140c412'
 
 def load_squad_v2():
-    dataset = load_dataset("squad_v2")
-    return dataset
-
+    return load_dataset('rajpurkar/squad_v2', revision=DATASET_REVISION,
+                        cache_dir=str(ROOT/'.cache/datasets'))
 
 def save_raw():
-    ds = load_squad_v2()
-    data_dir = Path("data/raw")
-    data_dir.mkdir(parents=True, exist_ok=True)
-    for split in ["train", "validation"]:
-        with open(data_dir / f"{split}.json", "w", encoding="utf-8") as f:
-            json.dump(ds[split].to_list(), f, ensure_ascii=False)
+    ds=load_squad_v2()
+    output=ROOT/'data/raw';output.mkdir(parents=True,exist_ok=True)
+    for split in ['train','validation']:
+        (output/f'{split}.json').write_text(json.dumps(ds[split].to_list(),ensure_ascii=False),encoding='utf-8')
     return ds
 
-
-def prepare_splits(val_holdout=2000, seed=42):
-    ds = load_squad_v2()
-    train = ds["train"]
-    val = ds["validation"]
-    # simple held-out split from validation for threshold tuning
-    val = val.shuffle(seed=seed)
-    val_tune = val.select(range(min(val_holdout, len(val))))
-    val_test = val.select(range(min(val_holdout, len(val)), len(val)))
-    return train, val_tune, val_test
+def prepare_splits(val_holdout=500,seed=42):
+    ds=load_squad_v2();val=ds['validation'].shuffle(seed=seed)
+    return ds['train'],val.select(range(val_holdout)),val.select(range(val_holdout,len(val)))

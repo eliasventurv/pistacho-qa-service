@@ -1,96 +1,104 @@
+"""Contract-compliant CPU serving. No remote inference."""
+import asyncio
+import hmac
+import logging
 import os
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException, Header, Request
-from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pathlib import Path
 from typing import Optional
+from fastapi import Depends, FastAPI, Header, HTTPException, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import FileResponse, JSONResponse
+from pydantic import BaseModel, ConfigDict, Field
+from starlette.concurrency import run_in_threadpool
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
-model = None
-tokenizer = None
+logger = logging.getLogger(__name__)
+
+def load_predictor():
+    import torch
+    from src.predict import QAPredictor
+    torch.set_num_threads(int(os.environ.get('QA_CPU_THREADS', '4')))
+    return QAPredictor(device='cpu')
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
-    global model, tokenizer
-    # Load model here in real implementation
-    model = "loading"
+async def lifespan(app):
+    app.state.predictor = None
+    app.state.load_error = False
+    app.state.inference_lock = asyncio.Lock()
+    async def load():
+        try:
+            app.state.predictor = await run_in_threadpool(load_predictor)
+        except Exception:
+            app.state.load_error = True
+            logger.exception('Model could not be loaded')
+    task = asyncio.create_task(load())
     yield
-    model = None
+    await task
+    app.state.predictor = None
 
-
-app = FastAPI(lifespan=lifespan)
-
-
-class HealthResponse(BaseModel):
-    status: str
-
-
-class InfoResponse(BaseModel):
-    team: str
-    model: str
-    params: int
-    max_seq_length: Optional[int] = None
-    doc_stride: Optional[int] = None
-
+app = FastAPI(title='Pistacho QA', lifespan=lifespan)
 
 class PredictRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid', strict=True)
     id: str = Field(min_length=1, max_length=64)
     context: str = Field(min_length=1, max_length=5000)
     question: str = Field(min_length=1, max_length=500)
 
-
 class PredictResponse(BaseModel):
     id: str
     answer: Optional[str]
-    start: Optional[int]
-    score: float
-
+    start: Optional[int] = Field(ge=0)
+    score: float = Field(ge=0, le=1)
 
 def verify_token(authorization: Optional[str] = Header(None)):
-    expected = os.environ.get("QA_API_TOKEN")
+    expected = os.environ.get('QA_API_TOKEN')
     if not expected:
-        raise HTTPException(status_code=500, detail="Token not configured")
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="unauthorized")
-    token = authorization.split(" ", 1)[1]
-    # constant-time not critical for scaffold but placeholder
-    if token != expected:
-        raise HTTPException(status_code=401, detail="unauthorized")
-    return True
+        raise HTTPException(500, 'QA_API_TOKEN is not configured')
+    if not authorization or not authorization.startswith('Bearer ') or not hmac.compare_digest(
+            authorization[7:].encode('utf-8'), expected.encode('utf-8')):
+        raise HTTPException(401, 'unauthorized', headers={'WWW-Authenticate': 'Bearer'})
 
+def get_predictor(request):
+    predictor = getattr(request.app.state, 'predictor', None)
+    if predictor is None:
+        raise HTTPException(500, 'Model is unavailable')
+    return predictor
 
-@app.get("/health")
-async def health():
-    if model == "loading":
-        return JSONResponse(status_code=503, content={"status": "loading"})
-    return {"status": "ok"}
+@app.get('/', include_in_schema=False)
+async def demo_page():
+    # Public demo UI; it calls the protected endpoints with the token the user types.
+    return FileResponse(Path(__file__).parent / 'static/index.html')
 
+@app.get('/health')
+async def health(request: Request):
+    ready = getattr(request.app.state, 'predictor', None) is not None and bool(os.environ.get('QA_API_TOKEN'))
+    return JSONResponse({'status': 'ok' if ready else 'loading'}, status_code=200 if ready else 503)
 
-@app.get("/info", response_model=InfoResponse)
-async def info(authorized: bool = verify_token):
-    return {
-        "team": "Pistacho",
-        "model": "distilbert-base-uncased",
-        "params": 66362880,
-        "max_seq_length": 384,
-        "doc_stride": 128,
-    }
+@app.get('/info', dependencies=[Depends(verify_token)])
+async def info(request: Request):
+    predictor = get_predictor(request)
+    cfg = predictor.config['model']
+    return {'team': 'pistacho', 'model': cfg['name'], 'params': predictor.params,
+            'max_seq_length': cfg['max_seq_length'], 'doc_stride': cfg['doc_stride']}
 
+@app.post('/predict', response_model=PredictResponse, dependencies=[Depends(verify_token)])
+async def predict(req: PredictRequest, request: Request):
+    predictor = get_predictor(request)
+    async with request.app.state.inference_lock:
+        result = await run_in_threadpool(predictor.predict, req.context, req.question)
+    return {'id': req.id, **result}
 
-@app.post("/predict", response_model=PredictResponse)
-async def predict(req: PredictRequest, authorized: bool = verify_token):
-    # Placeholder response
-    return {
-        "id": req.id,
-        "answer": None,
-        "start": None,
-        "score": 0.0,
-    }
+@app.exception_handler(StarletteHTTPException)
+async def http_error(request, exc):
+    code = 'unauthorized' if exc.status_code == 401 else 'bad_request' if 400 <= exc.status_code < 500 else 'internal_error'
+    return JSONResponse({'error': code}, status_code=exc.status_code, headers=exc.headers)
 
+@app.exception_handler(RequestValidationError)
+async def validation_error(request, exc):
+    return JSONResponse({'error': 'bad_request', 'detail': 'Body must match PredictRequest.'}, status_code=422)
 
-@app.exception_handler(HTTPException)
-async def http_exception_handler(request: Request, exc: HTTPException):
-    if exc.status_code == 401:
-        return JSONResponse(status_code=401, content={"error": "unauthorized"})
-    if exc.status_code in (400, 422):
-        return JSONResponse(status_code=exc.status_code, content={"error": "bad_request", "detail": str(exc.detail)})
-    return JSONResponse(status_code=exc.status_code, content={"error": "internal_error", "detail": str(exc.detail)})
+@app.exception_handler(Exception)
+async def internal_error(request, exc):
+    logger.error('Request failed', exc_info=(type(exc), exc, exc.__traceback__))
+    return JSONResponse({'error': 'internal_error'}, status_code=500)

@@ -1,0 +1,171 @@
+{
+  "info": {
+    "team": "pistacho",
+    "model": "FacebookAI/roberta-base",
+    "params": 124056578,
+    "max_seq_length": 384,
+    "doc_stride": 128
+  },
+  "local_url": "http://127.0.0.1:8000",
+  "auth_checks": [
+    {
+      "url": "http://127.0.0.1:8000",
+      "endpoint": "/info",
+      "status": 401
+    },
+    {
+      "url": "http://127.0.0.1:8000",
+      "endpoint": "/info",
+      "status": 401
+    },
+    {
+      "url": "http://127.0.0.1:8000",
+      "endpoint": "/predict",
+      "status": 401
+    },
+    {
+      "url": "http://127.0.0.1:8000",
+      "endpoint": "/predict",
+      "status": 401
+    },
+    {
+      "url": "https://boil-confiding-default.ngrok-free.dev",
+      "endpoint": "/info",
+      "status": 401
+    },
+    {
+      "url": "https://boil-confiding-default.ngrok-free.dev",
+      "endpoint": "/info",
+      "status": 401
+    },
+    {
+      "url": "https://boil-confiding-default.ngrok-free.dev",
+      "endpoint": "/predict",
+      "status": 401
+    },
+    {
+      "url": "https://boil-confiding-default.ngrok-free.dev",
+      "endpoint": "/predict",
+      "status": 401
+    }
+  ],
+  "cpu_benchmark": {
+    "requests": 50,
+    "total_seconds": 19.90686650000862,
+    "max_seconds": 0.8728434000222478,
+    "mean_seconds": 0.39813423800340386,
+    "seconds": [
+      0.3371993000037037,
+      0.30370840002433397,
+      0.30364640001789667,
+      0.3081578000274021,
+      0.8157710999948904,
+      0.3388398000097368,
+      0.30210270002135076,
+      0.27422740001929924,
+      0.29538399999728426,
+      0.8115279999910854,
+      0.2822575999889523,
+      0.2844580999808386,
+      0.2860223999887239,
+      0.280940600001486,
+      0.8571327999816276,
+      0.27698680001776665,
+      0.287164200010011,
+      0.2895849000196904,
+      0.28287370002362877,
+      0.8728434000222478,
+      0.2880400000140071,
+      0.2858360000245739,
+      0.2696656000043731,
+      0.3022393999854103,
+      0.824236699991161,
+      0.32421429999521933,
+      0.31338209999375977,
+      0.32089649999397807,
+      0.2879425999999512,
+      0.8296083000022918,
+      0.2843707000138238,
+      0.30131800001254305,
+      0.29712559998733923,
+      0.27837499999441206,
+      0.8363674999854993,
+      0.32080109999515116,
+      0.28487659999518655,
+      0.3094748000148684,
+      0.27394109999295324,
+      0.7900881999812555,
+      0.27427009999519214,
+      0.27400209999177605,
+      0.275170499982778,
+      0.2818418999959249,
+      0.7971397000073921,
+      0.27570600001490675,
+      0.2835653000220191,
+      0.2780036000185646,
+      0.2886758000240661,
+      0.7647073999978602
+    ]
+  },
+  "public_url_tested": "https://boil-confiding-default.ngrok-free.dev",
+  "checks": [
+    {
+      "test": "1 /health no token",
+      "status": 200,
+      "expected": 200,
+      "ok": true,
+      "seconds": 0.444,
+      "body": {
+        "status": "ok"
+      }
+    },
+    {
+      "test": "2 /info no token",
+      "status": 401,
+      "expected": 401,
+      "ok": true,
+      "seconds": 0.332,
+      "body": {
+        "error": "unauthorized"
+      }
+    },
+    {
+      "test": "3 /info wrong token",
+      "status": 401,
+      "expected": 401,
+      "ok": true,
+      "seconds": 0.339,
+      "body": {
+        "error": "unauthorized"
+      }
+    },
+    {
+      "test": "4 /info valid token",
+      "status": 200,
+      "expected": 200,
+      "ok": true,
+      "seconds": 0.347,
+      "body": {
+        "team": "pistacho",
+        "model": "FacebookAI/roberta-base",
+        "params": 124056578,
+        "max_seq_length": 384,
+        "doc_stride": 128
+      }
+    },
+    {
+      "test": "5 /predict valid token",
+      "status": 200,
+      "expected": 200,
+      "ok": true,
+      "seconds": 1.543,
+      "body": {
+        "id": "sample-01",
+        "answer": "16",
+        "start": 383,
+        "score": 0.9955311384446804
+      }
+    }
+  ],
+  "public_tunnel_note": "ngrok fixed domain, team self-test with a throwaway token. Not the instructor dry run."
+}

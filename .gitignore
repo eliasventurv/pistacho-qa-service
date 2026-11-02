@@ -1,33 +1,20 @@
-# Git
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-
-# Environments
+*.py[cod]
+.pytest_cache/
 .env
 .venv/
 venv/
-env/
-
-# Data
 data/
-*.jsonl
-*.tar.gz
 *.zip
-
-# Artifacts/weights
 artifacts/
 models/
 checkpoints/
-
-# Logs
-logs/*.png
-logs/*.csv
-logs/*.json
-
-# OS
+.cache/
+logs/*.out
+logs/*.err
 .DS_Store
 Thumbs.db
+# Local binaries and transient process files
+tools/*.exe
+tools/*.zip
+logs/*pid*

@@ -1,0 +1,79 @@
+{
+  "url": "https://boil-confiding-default.ngrok-free.dev",
+  "rows": [
+    {
+      "id": "sample-01",
+      "references": [
+        "16",
+        "16 attention heads"
+      ],
+      "prediction": {
+        "id": "sample-01",
+        "answer": "16",
+        "start": 383,
+        "score": 0.9955311384446804
+      },
+      "em": 1.0,
+      "f1": 1.0,
+      "seconds": 0.5912763999949675
+    },
+    {
+      "id": "sample-02",
+      "references": [
+        "3.5 days"
+      ],
+      "prediction": {
+        "id": "sample-02",
+        "answer": "3.5 days",
+        "start": 437,
+        "score": 0.9997377370491487
+      },
+      "em": 1.0,
+      "f1": 1.0,
+      "seconds": 0.6229087000247091
+    },
+    {
+      "id": "sample-03",
+      "references": [],
+      "prediction": {
+        "id": "sample-03",
+        "answer": null,
+        "start": null,
+        "score": 0.9999999991903945
+      },
+      "em": 1.0,
+      "f1": 1.0,
+      "seconds": 0.6324597999919206
+    },
+    {
+      "id": "sample-04",
+      "references": [],
+      "prediction": {
+        "id": "sample-04",
+        "answer": null,
+        "start": null,
+        "score": 0.8318499602825322
+      },
+      "em": 1.0,
+      "f1": 1.0,
+      "seconds": 0.6209730000118725
+    },
+    {
+      "id": "sample-05",
+      "references": [
+        "50,257",
+        "50,257 tokens"
+      ],
+      "prediction": {
+        "id": "sample-05",
+        "answer": "50,257",
+        "start": 3157,
+        "score": 0.9424533926335104
+      },
+      "em": 1.0,
+      "f1": 1.0,
+      "seconds": 1.1668073000037111
+    }
+  ],
+  "mean_seconds": 0.7268850400054362
+}
