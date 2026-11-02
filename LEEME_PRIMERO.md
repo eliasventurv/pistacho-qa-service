@@ -9,13 +9,14 @@ Equipo `pistacho`: Elías Ventura, Lilly Flores y Andrés Avilés.
 - Validación separada (2000 preguntas): 81,25 % EM y 83,77 % F1.
 - Ejemplos públicos: 5 de 5 correctos.
 - 50 solicitudes locales en CPU: 19,9 s; media 0,40 s; máxima 0,87 s.
-- 30 pruebas automatizadas aprobadas.
+- 31 pruebas automatizadas aprobadas.
 - El modelo anterior (DistilBERT, 58,4 EM / 60,4 F1, 3 de 5) está documentado en
   `logs/distilbert-baseline/`.
 
 ## Abrir el servicio
 
-Los pesos van en `artifacts/roberta-squad2/` (fuera de Git). En PowerShell, dentro
+Los pesos van en `artifacts/roberta-squad2/` (fuera de Git). Se descargan del release
+`submission` en GitHub; descomprime el ZIP en la raíz del repositorio. En PowerShell, dentro
 de esta carpeta:
 
 ```powershell
@@ -39,5 +40,6 @@ Respaldo: `cloudflared tunnel --url http://127.0.0.1:8000` (la URL cambia cada v
 
 ## Pendientes
 
-Dry run oficial por el túnel desde otra red, enviar la URL al docente, subir los
-pesos nuevos como release, mover la etiqueta `submission`, y preparar pitch y Q&A.
+El código, el REPORT y los pesos ya están entregados (etiqueta `submission` y release).
+Falta: dry run oficial por el túnel, enviar la URL y el token al docente por privado,
+y preparar pitch y Q&A (`docs/PRESENTATION.md` todavía describe DistilBERT).

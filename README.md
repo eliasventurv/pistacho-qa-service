@@ -61,7 +61,7 @@ See [docs/COMPLIANCE.md](docs/COMPLIANCE.md) for the section V audit.
 - `REPORT.md`: report in English, with all required headings.
 - `docs/PRESENTATION.md`: three-minute pitch and code-specific Q&A preparation.
 
-Model weights and checkpoints stay in `artifacts/`, outside Git. Keep the
-original Git history and push changes only to the feature branch. Create the
-`submission` tag only after the report and real evaluation evidence are ready.
-A ZIP of the source code is not a replacement for Git history.
+Model weights and checkpoints stay in `artifacts/`, outside Git. The trained
+model is attached to the GitHub release `submission`: unzip the asset in the
+repository root so `artifacts/roberta-squad2/` exists. The `submission` tag marks
+the reviewed commit. A ZIP of the source code is not a replacement for Git history.

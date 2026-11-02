@@ -1,5 +1,8 @@
 # Three-minute pitch and Q&A preparation
 
+> **Outdated draft.** This plan describes the DistilBERT baseline. The submitted
+> model is RoBERTa-base; use the figures in REPORT.md when updating the pitch.
+
 Present in English. Replace any pending metric with its measured value before
 presenting; never claim results based on the untrained scaffold.
 
