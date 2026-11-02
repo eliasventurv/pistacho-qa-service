@@ -79,3 +79,8 @@ def test_missing_environment_fails_closed(client,monkeypatch):
     monkeypatch.delenv('QA_API_TOKEN')
     assert client.get('/info').status_code==500
     assert client.get('/health').status_code==503
+
+def test_demo_page_is_public_html(client):
+    del client.headers['Authorization']
+    r=client.get('/')
+    assert r.status_code==200 and 'text/html' in r.headers['content-type']

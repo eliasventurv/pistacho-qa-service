@@ -4,10 +4,11 @@ import hmac
 import logging
 import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Optional
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 from starlette.concurrency import run_in_threadpool
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -63,6 +64,11 @@ def get_predictor(request):
     if predictor is None:
         raise HTTPException(500, 'Model is unavailable')
     return predictor
+
+@app.get('/', include_in_schema=False)
+async def demo_page():
+    # Public demo UI; it calls the protected endpoints with the token the user types.
+    return FileResponse(Path(__file__).parent / 'static/index.html')
 
 @app.get('/health')
 async def health(request: Request):
