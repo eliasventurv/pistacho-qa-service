@@ -1,23 +1,5 @@
 {
-  "url": "https://indexed-bibliographic-glossary-contributing.trycloudflare.com",
-  "metrics": {
-    "overall": {
-      "count": 5,
-      "exact_match": 60.0,
-      "f1": 60.0
-    },
-    "answerable": {
-      "count": 3,
-      "exact_match": 66.66666666666667,
-      "f1": 66.66666666666667
-    },
-    "unanswerable": {
-      "count": 2,
-      "exact_match": 50.0,
-      "f1": 50.0
-    }
-  },
-  "mean_seconds": 0.47971533999952953,
+  "url": "https://boil-confiding-default.ngrok-free.dev",
   "rows": [
     {
       "id": "sample-01",
@@ -27,13 +9,13 @@
       ],
       "prediction": {
         "id": "sample-01",
-        "answer": null,
-        "start": null,
-        "score": 0.7855964128441739
+        "answer": "16",
+        "start": 383,
+        "score": 0.9955311384446804
       },
-      "em": 0.0,
-      "f1": 0.0,
-      "seconds": 0.4411012999989907
+      "em": 1.0,
+      "f1": 1.0,
+      "seconds": 0.5912763999949675
     },
     {
       "id": "sample-02",
@@ -44,11 +26,11 @@
         "id": "sample-02",
         "answer": "3.5 days",
         "start": 437,
-        "score": 0.6114655807479804
+        "score": 0.9997377370491487
       },
       "em": 1.0,
       "f1": 1.0,
-      "seconds": 0.3986521000006178
+      "seconds": 0.6229087000247091
     },
     {
       "id": "sample-03",
@@ -57,24 +39,24 @@
         "id": "sample-03",
         "answer": null,
         "start": null,
-        "score": 0.9009846922804129
+        "score": 0.9999999991903945
       },
       "em": 1.0,
       "f1": 1.0,
-      "seconds": 0.4383820000002743
+      "seconds": 0.6324597999919206
     },
     {
       "id": "sample-04",
       "references": [],
       "prediction": {
         "id": "sample-04",
-        "answer": "10,000 times",
-        "start": 263,
-        "score": 0.5537749000364118
+        "answer": null,
+        "start": null,
+        "score": 0.8318499602825322
       },
-      "em": 0.0,
-      "f1": 0.0,
-      "seconds": 0.40036849999887636
+      "em": 1.0,
+      "f1": 1.0,
+      "seconds": 0.6209730000118725
     },
     {
       "id": "sample-05",
@@ -86,11 +68,12 @@
         "id": "sample-05",
         "answer": "50,257",
         "start": 3157,
-        "score": 0.9791951214872027
+        "score": 0.9424533926335104
       },
       "em": 1.0,
       "f1": 1.0,
-      "seconds": 0.7200727999988885
+      "seconds": 1.1668073000037111
     }
-  ]
+  ],
+  "mean_seconds": 0.7268850400054362
 }

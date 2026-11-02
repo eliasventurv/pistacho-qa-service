@@ -27,6 +27,26 @@
       "url": "http://127.0.0.1:8000",
       "endpoint": "/predict",
       "status": 401
+    },
+    {
+      "url": "https://boil-confiding-default.ngrok-free.dev",
+      "endpoint": "/info",
+      "status": 401
+    },
+    {
+      "url": "https://boil-confiding-default.ngrok-free.dev",
+      "endpoint": "/info",
+      "status": 401
+    },
+    {
+      "url": "https://boil-confiding-default.ngrok-free.dev",
+      "endpoint": "/predict",
+      "status": 401
+    },
+    {
+      "url": "https://boil-confiding-default.ngrok-free.dev",
+      "endpoint": "/predict",
+      "status": 401
     }
   ],
   "cpu_benchmark": {
@@ -86,5 +106,66 @@
       0.2886758000240661,
       0.7647073999978602
     ]
-  }
+  },
+  "public_url_tested": "https://boil-confiding-default.ngrok-free.dev",
+  "checks": [
+    {
+      "test": "1 /health no token",
+      "status": 200,
+      "expected": 200,
+      "ok": true,
+      "seconds": 0.444,
+      "body": {
+        "status": "ok"
+      }
+    },
+    {
+      "test": "2 /info no token",
+      "status": 401,
+      "expected": 401,
+      "ok": true,
+      "seconds": 0.332,
+      "body": {
+        "error": "unauthorized"
+      }
+    },
+    {
+      "test": "3 /info wrong token",
+      "status": 401,
+      "expected": 401,
+      "ok": true,
+      "seconds": 0.339,
+      "body": {
+        "error": "unauthorized"
+      }
+    },
+    {
+      "test": "4 /info valid token",
+      "status": 200,
+      "expected": 200,
+      "ok": true,
+      "seconds": 0.347,
+      "body": {
+        "team": "pistacho",
+        "model": "FacebookAI/roberta-base",
+        "params": 124056578,
+        "max_seq_length": 384,
+        "doc_stride": 128
+      }
+    },
+    {
+      "test": "5 /predict valid token",
+      "status": 200,
+      "expected": 200,
+      "ok": true,
+      "seconds": 1.543,
+      "body": {
+        "id": "sample-01",
+        "answer": "16",
+        "start": 383,
+        "score": 0.9955311384446804
+      }
+    }
+  ],
+  "public_tunnel_note": "ngrok fixed domain, team self-test with a throwaway token. Not the instructor dry run."
 }

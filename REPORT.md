@@ -116,7 +116,9 @@ found by the sliding windows.
 | Mean latency per `/predict` request on your laptop (CPU) | 0.40 s (50 local HTTP requests: 19.9 s total, max 0.87 s) |
 | Laptop CPU and RAM | 13th Gen Intel Core i7-13620H, 16 GB |
 
-The tunnel adds network round-trip time on top of these numbers (to be measured at the dry run).
+Through the ngrok tunnel, the five public samples averaged 0.73 s (max 1.17 s); the first request after
+startup took 1.5 s. All five brief checks and 8 negative auth checks (local + tunnel) passed
+(`logs/service_verification.json`, `logs/tunnel_sample_results.json`).
 
 ## 7. Problems encountered and how you fixed them
 

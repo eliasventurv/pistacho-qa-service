@@ -20,7 +20,7 @@ the instructor's compliance checks or hidden evaluation.
 - Public samples: **5/5 correct** over local HTTP (DistilBERT: 3/5).
 - Long-context sample: correct `50,257` at character 3157.
 - Local CPU benchmark: **50 requests in 19.9 s**, mean **0.40 s**, slowest **0.87 s**.
-- Tunnel latency for RoBERTa: to be measured through ngrok.
+- Through ngrok: 5/5 correct, mean **0.73 s**, slowest **1.17 s**.
 
 This benchmark repeats the five public samples. It cannot guarantee latency or
 accuracy on the unseen 50-item evaluation. The public test tunnel was stopped
@@ -37,7 +37,7 @@ after verification; its recorded URL is not a currently running service.
 - [x] Three-minute pitch and code-specific Q&A notes prepared.
 - [x] Team name `pistacho`; token chosen by the team (set only in the environment).
 - [x] ngrok account configured; fixed domain https://boil-confiding-default.ngrok-free.dev.
-- [ ] Five curl checks through ngrok with the RoBERTa service.
+- [x] Five brief checks and 401 checks through ngrok with the RoBERTa service.
 - [ ] Instructor dry run from another network and URL shared by the team.
 - [ ] RoBERTa weights uploaded as a release; `submission` tag moved to the RoBERTa commit.
 - [ ] Pitch and individual Q&A rehearsed by each member.
